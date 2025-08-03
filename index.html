@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Mensiversarry</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@400;700&display=swap');
+        
+        :root {
+            --retro-pink: #ffb6c1;
+            --tape-brown: #8B4513;
+            --vintage-blue: #89CFF0;
+            --typewriter: 'Courier Prime', monospace;
+            --script: 'Dancing Script', cursive;
+            --cassette-dark: #2a2a2a;
+            --cassette-light: #3a3a3a;
+        }
+        
+        body {
+            background-color: #f5f5dc;
+            color: #333;
+            font-family: var(--typewriter);
+            margin: 0;
+            padding: 0;
+            background-image: radial-gradient(circle, #f5f5dc 0%, #e8e8cc 100%);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: var(--script);
+            font-size: 2.5rem;
+            color: var(--tape-brown);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-style: italic;
+            color: #666;
+        }
+        
+        .player-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .cassette-player {
+            width: 400px;
+            height: 250px;
+            background: linear-gradient(145deg, #d9d9d9, #ffffff);
+            border-radius: 15px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3),
+                        -5px -5px 15px rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            position: relative;
+            border: 8px solid #444;
+        }
+        
+        .cassette {
+            width: 250px;
+            height: 150px;
+            background: linear-gradient(145deg, var(--cassette-dark), var(--cassette-light));
+            border-radius: 15px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+            padding: 0 30px;
+        }
+        
+        .cassette::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 120px;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .reel {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+        
+        .reel-center {
+            width: 15px;
+            height: 15px;
+            background: #444;
+            border-radius: 50%;
+        }
+        
+        .reel-spokes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .spoke {
+            position: absolute;
+            width: 2px;
+            height: 25px;
+            background: #555;
+            top: 0;
+            left: 50%;
+            transform-origin: center 25px;
+        }
+        
+        .tape-window {
+            position: absolute;
+            width: 100px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .tape {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #333,
+                #333 10px,
+                #555 10px,
+                #555 20px
+            );
+            animation: tapeMove 4s linear infinite;
+            display: none;
+        }
+        
+        .cassette-label {
+            position: absolute;
+            bottom: 15px;
+            width: 180px;
+            height: 25px;
+            background: var(--retro-pink);
+            text-align: center;
+            font-size: 0.8rem;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            width: calc(100% - 40px);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #d9d9d9, #ffffff);
+            border: none;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2),
+                       -3px -3px 5px rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: #444;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3),
+                       -4px -4px 6px rgba(255, 255, 255, 0.6);
+        }
+        
+        .control-btn:active {
+            transform: scale(0.95);
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2),
+                       -1px -1px 3px rgba(255, 255, 255, 0.5);
+        }
+        
+        .tracklist {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .track {
+            padding: 10px;
+            border-bottom: 1px dashed #ccc;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--typewriter);
+            font-size: 0.9rem;
+        }
+        
+        .track:hover {
+            background: rgba(255, 182, 193, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .track.active {
+            background: rgba(255, 182, 193, 0.4);
+            font-weight: bold;
+        }
+        
+        .track-number {
+            font-weight: bold;
+            margin-right: 10px;
+            color: var(--tape-brown);
+            font-family: var(--typewriter);
+        }
+        
+        .story-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+            min-height: 100px;
+            border-left: 5px solid var(--retro-pink);
+        }
+        
+        .story-title {
+            font-family: var(--typewriter);
+            font-size: 1.3rem;
+            color: var(--tape-brown);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .story-content {
+            line-height: 1.6;
+        }
+        
+        .spotify-embed {
+            margin-top: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px dashed #ccc;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .secret-note {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            background: var(--retro-pink);
+            transform: rotate(5deg);
+            padding: 15px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            font-family: var(--typewriter);
+            font-size: 1.1rem;
+            animation: stickyNote 2s infinite alternate;
+        }
+        
+        @keyframes stickyNote {
+            0% { transform: rotate(5deg); }
+            100% { transform: rotate(-2deg); }
+        }
+        
+        .gallery {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .gallery-title {
+            font-family: var(--typewriter);
+            font-size: 1.8rem;
+            color: var(--tape-brown);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .gallery-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .gallery-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .gallery-image:hover {
+            transform: scale(1.05);
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        
+        @keyframes reelSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes tapeMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .spinning .reel-spokes {
+            animation: reelSpin 1.5s linear infinite;
+        }
+        
+        .tape-moving .tape {
+            display: block;
+        }
+        
+        
+        @media (max-width: 768px) {
+            .player-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cassette-player {
+                width: 300px;
+                height: 200px;
+            }
+            
+            .cassette {
+                width: 200px;
+                height: 120px;
+                padding: 0 20px;
+            }
+            
+            .reel {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .tracklist {
+                width: 100%;
+                max-height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mixtape Relationship – Vol. 1</h1>
+            <p class="subtitle">A collection of songs that tell our story</p>
+        </header>
+        
+        <div class="player-container">
+            <div class="cassette-player">
+                <div class="cassette">
+                    <div class="reel" id="left-reel">
+                        <div class="reel-center"></div>
+                        <div class="reel-spokes" id="left-spokes">
+                            
+                        </div>
+                    </div>
+                    <div class="tape-window">
+                        <div class="tape"></div>
+                    </div>
+                    <div class="reel" id="right-reel">
+                        <div class="reel-center"></div>
+                        <div class="reel-spokes" id="right-spokes">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn" id="shuffle-btn">⇄</button>
+                    <button class="control-btn" id="prev-btn">⏮</button>
+                    <button class="control-btn" id="play-btn">▶</button>
+                    <button class="control-btn" id="next-btn">⏭</button>
+                </div>
+            </div>
+            
+            <div class="tracklist" id="tracklist">
+                <div class="track active" data-track="0">
+                    <span class="track-number">Track 01</span> I Just Feel Safe With You
+                </div>
+                <div class="track" data-track="1">
+                    <span class="track-number">Track 02</span> You’re Always What Feels Like Home
+                </div>
+                <div class="track" data-track="2">
+                    <span class="track-number">Track 03</span>  I’d Choose You Every Time Again
+                </div>
+                <div class="track" data-track="3">
+                    <span class="track-number">Track 04</span> You Make Me Feel Really Seen
+                </div>
+                <div class="track" data-track="4">
+                    <span class="track-number">Track 05</span> I Love The Way You Love
+                </div>
+                <div class="track" data-track="5">
+                    <span class="track-number">Bonus Track</span> Happy Mensiversarry, Love
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-container">
+            <div class="story-title" id="story-title">Track 01 - The First Time We Met</div>
+            <div class="story-content" id="story-content">
+                i love you.
+            </div>
+            <div class="spotify-embed" id="spotify-embed">
+                
+            </div>
+        </div>
+        
+        <div class="gallery" id="gallery">
+            <div class="gallery-title">Our Secret Gallery</div>
+            <div class="gallery-images">
+                <img src="images/memory1.jpg" class="gallery-image" alt="Our memory 1">
+                <img src="images/memory2.jpg" class="gallery-image" alt="Our memory 2">
+                <img src="images/memory3.jpg" class="gallery-image" alt="Our memory 3">
+                <img src="images/memory4.jpg" class="gallery-image" alt="Our memory 4">
+            </div>
+        </div>
+        
+        <footer>
+            <p>Mensiversarry: <span id="anniversary-date">12 Agustus 2025</span> | Total Tracks: <span id="total-tracks">6</span></p>
+            <p>"I don’t say it enough, but I really love doing life with you. Happy mensiversary, baby."</p>
+        </footer>
+    </div>
+    
+    <div class="secret-note" id="secret-note">
+        If you read this, i miss you so much.
+    </div>
+    
+    <script>
+        
+        const tracks = [
+            {
+                title: "I Just Feel Safe With You",
+                story: "There’s a calm that comes over me when I’m with you, and honestly, I didn’t know I was missing that kind of peace until you showed up. You don’t force comfort you are comfort. You don’t ask me to be better, but somehow, I want to be. I’ve been around people who made me feel like I had to earn love. But you? You just offer it, simply, steadily, without pressure. With you, I don’t have to overthink my every word, or hide the tired version of me. I can be quiet, messy, unsure and you’ll still stay. That kind of safety is rare. And I don’t take it for granted.",
+                spotifyUri: "0T5iIrXA4p5GsubkhuBIKV", 
+                secretNote: "Secret Message 01:  still fall for you every single day, in every little smile, in every quiet moment."
+            },
+            {
+                title: "Track 02 - You’re Always What Feels Like Home",
+                story: "It’s not about the place, the time, or what we’re doing when I’m with you, I feel grounded. There’s this quiet warmth I get just being near you, like everything else can wait. You don’t have to hold my hand or say the right thing every time. You just need to be there, and somehow, that’s enough. When the world gets loud, I look for you. When the day feels long, you’re the one I want to tell about it. I think that’s what love really is not the butterflies or big moments, but that steady pull back to someone who feels like home, every single day.",
+                spotifyUri: "1Q7EgiMOuwDcB0PJC6AzON", 
+                secretNote: "Secret Message 02: You make my world feel right just by being in it. Even on the hardest days."
+            },
+            {
+                title: "Track 03 -  I’d Choose You Every Time Again",
+                story: "If I had to start over go through everything again, the highs and lows, the doubts, the waiting I’d still want it to end with you. Even if I had to meet you a little later, even if the path wasn’t easy, it’d be worth it just to find you again. Because you make love feel honest. Not perfect, not always simple but worth it. You make the effort feel meaningful, and the quiet moments feel full. You’re the one I want next to me, not just on the best days, but especially on the ones where everything feels like too much. Loving you isn’t a one-time decision. It’s a choice I keep making and I never regret it.",
+                spotifyUri: "1dGr1c8CrMLDpV6mPbImSI", 
+                secretNote: "Secret Message 03: Did you know? my heart will always find its way back to you."
+            },
+            {
+                title: "Track 04 - You Make Me Feel Really Seen",
+                story: "You notice things no one else does. Like how my voice changes when I’m tired, or how I go quiet when I’m overthinking. You don’t call me out you lean in, gently. You make me feel like I don’t have to explain every little thing just to be understood. And that’s rare. You don’t just listen you care. You make space for the parts of me that are still learning, still healing, still unsure. Being seen like that? It’s the kind of intimacy I didn’t know I needed. And now that I have it with you, I never want to lose it.",
+                spotifyUri: "0Mq0reDcNpgmQkjHfzpJrp", 
+                secretNote: "Secret Message 04: Loving you is the best thing I've ever done, and I’d do it all over again."
+            },
+            {
+                title: "Track 05 - I Love The Way You Love",
+                story: "There’s a quiet kind of strength in the way you love. You’re not loud about it, you don’t try to prove anything but I feel it in everything you do. In the way you remember the small things. In how you make space for me, even when your day is full. You’re patient when I’m overthinking, kind when I’m off balance, steady when I’m anything but. Your love doesn’t need grand gestures it shows up in everyday moments, in ways that feel real. And that’s what makes it beautiful. I’ve never felt more sure, more safe, or more seen than I do with you. Loving you back feels like the easiest thing I’ve ever done.",
+                spotifyUri: "3CV4lFELdziNM1OnHU8nwz",
+                secretNote: "Secret Message 05: Sometimes I just look at you and wonder how I got so lucky."
+            },
+            {
+                title: "Bonus Track - Happy Mensiversarry",
+                story: "It’s been another month with you and somehow, I still get that warm feeling every time we talk, every time you smile, even in silence. Thank you for being so easy to love, for making ordinary days feel like something I want to hold on to. You’re still the person I want to tell things to first, and the one I hope never stops choosing me too. I know we’re not perfect, but this? Us? It feels real, and it feels right. I’m really, really glad it’s you. Here’s to more days like this simple, steady, and ours.",
+                spotifyUri: "1jXfVzMk8cSbvAXMML4Y4f",
+                isBonus: true,
+                photos: [
+                    "images/memory1.jpg",
+                    "images/memory2.jpg", 
+                    "images/memory3.jpg",
+                    "images/memory4.jpg"
+                ],
+                secretNote: "Secret Message: I’d choose you in every lifetime, every version of me"
+            }
+        ];
+
+        
+        function createSpokes(elementId, count) {
+            const spokesContainer = document.getElementById(elementId);
+            const angleIncrement = 360 / count;
+            
+            for (let i = 0; i < count; i++) {
+                const spoke = document.createElement('div');
+                spoke.className = 'spoke';
+                spoke.style.transform = `rotate(${i * angleIncrement}deg)`;
+                spokesContainer.appendChild(spoke);
+            }
+        }
+
+        
+        createSpokes('left-spokes', 8);
+        createSpokes('right-spokes', 8);
+        
+        
+        const playBtn = document.getElementById('play-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const shuffleBtn = document.getElementById('shuffle-btn');
+        const tracklist = document.getElementById('tracklist');
+        const trackItems = document.querySelectorAll('.track');
+        const storyTitle = document.getElementById('story-title');
+        const storyContent = document.getElementById('story-content');
+        const leftReel = document.getElementById('left-reel');
+        const rightReel = document.getElementById('right-reel');
+        const cassette = document.querySelector('.cassette');
+        const secretNote = document.getElementById('secret-note');
+        const gallery = document.getElementById('gallery');
+        const galleryImages = document.querySelector('.gallery-images');
+        const spotifyEmbed = document.getElementById('spotify-embed');
+        
+        
+        let currentTrack = 0;
+        let isPlaying = false;
+        let spotifyIframe = null;
+        
+        
+        function loadTrack(trackIndex) {
+            const track = tracks[trackIndex];
+            
+            
+            storyTitle.textContent = track.title;
+            storyContent.textContent = track.story;
+            
+            
+            spotifyEmbed.innerHTML = `
+                <iframe src="https://open.spotify.com/embed/track/${track.spotifyUri}" 
+                        width="100%" 
+                        height="80" 
+                        frameborder="0" 
+                        allowtransparency="true" 
+                        allow="encrypted-media"
+                        id="spotify-iframe">
+                </iframe>
+            `;
+            
+            
+            spotifyIframe = document.getElementById('spotify-iframe');
+            
+            
+            trackItems.forEach(item => item.classList.remove('active'));
+            trackItems[trackIndex].classList.add('active');
+            
+            
+            secretNote.textContent = track.secretNote;
+            
+            
+            if (trackIndex === 4) {
+                setTimeout(() => {
+                    secretNote.style.display = 'block';
+                }, 3000);
+            }
+            
+            
+            if (track.isBonus) {
+                gallery.style.display = 'block';
+                
+                if (track.photos) {
+                    galleryImages.innerHTML = track.photos.map(photo => `
+                        <img src="${photo}" class="gallery-image" alt="Our memory">
+                    `).join('');
+                }
+            } else {
+                gallery.style.display = 'none';
+            }
+        }
+        
+        
+        function togglePlay() {
+            if (isPlaying) {
+                pauseTrack();
+            } else {
+                playTrack();
+            }
+        }
+        
+        function playTrack() {
+            playBtn.textContent = '⏸';
+            isPlaying = true;
+            leftReel.classList.add('spinning');
+            rightReel.classList.add('spinning');
+            cassette.classList.add('tape-moving');
+        }
+        
+        function pauseTrack() {
+            playBtn.textContent = '▶';
+            isPlaying = false;
+            leftReel.classList.remove('spinning');
+            rightReel.classList.remove('spinning');
+            cassette.classList.remove('tape-moving');
+        }
+        
+        
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % tracks.length;
+            loadTrack(currentTrack);
+            if (isPlaying) {
+                playTrack();
+            }
+        }
+        
+        
+        function prevTrack() {
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+            loadTrack(currentTrack);
+            if (isPlaying) {
+                playTrack();
+            }
+        }
+        
+        
+        function shuffleTracks() {
+            let newTrack;
+            do {
+                newTrack = Math.floor(Math.random() * tracks.length);
+            } while (newTrack === currentTrack && tracks.length > 1);
+            
+            currentTrack = newTrack;
+            loadTrack(currentTrack);
+            if (isPlaying) {
+                playTrack();
+            }
+        }
+        
+        
+        playBtn.addEventListener('click', togglePlay);
+        nextBtn.addEventListener('click', nextTrack);
+        prevBtn.addEventListener('click', prevTrack);
+        shuffleBtn.addEventListener('click', shuffleTracks);
+        
+        
+        trackItems.forEach(item => {
+            item.addEventListener('click', function() {
+                currentTrack = parseInt(this.getAttribute('data-track'));
+                loadTrack(currentTrack);
+                playTrack();
+            });
+        });
+        
+        
+        loadTrack(currentTrack);
+        
+        
+        setTimeout(() => {
+            if (!secretNote.style.display || secretNote.style.display === 'none') {
+                secretNote.style.display = 'block';
+                setTimeout(() => {
+                    secretNote.style.display = 'none';
+                }, 10000);
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
